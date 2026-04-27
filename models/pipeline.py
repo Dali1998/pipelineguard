@@ -3,6 +3,7 @@ from enum import StrEnum
 
 from pipelineguard.models.job import Job
 
+
 class PipelineType(StrEnum):
     GITLAB = "gitlab"
     GITHUB = "github"

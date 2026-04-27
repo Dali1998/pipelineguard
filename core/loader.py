@@ -35,7 +35,7 @@ _MATCHERS: list[tuple[PipelineType, callable]] = [
 
 def find_pipeline_files(root: str | Path) -> list[PipelineFile]:
     """
-    Walk `root` recursively and return all detected pipeline files.
+    Walk `root` recursively and return all detected pipeline files in the repository.
     Skips hidden directories and common noise dirs (node_modules, .git, venv, etc.).
     """
     root = Path(root).resolve()

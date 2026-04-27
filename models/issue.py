@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 
 
 class Severity(str, Enum):
@@ -32,12 +31,12 @@ class Issue:
 
     # Location context
     source_file: str
-    job_name: Optional[str] = None
-    line_number: Optional[int] = None
+    job_name: str | None = None
+    line_number: int | None = None
 
     # Extra detail
-    evidence: Optional[str] = None          # redacted snippet that triggered the rule
-    remediation: Optional[str] = None
+    evidence: str | None = None          # redacted snippet that triggered the rule
+    remediation: str | None = None
     references: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:

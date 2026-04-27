@@ -4,11 +4,12 @@ and returns a unified Pipeline object.
 """
 
 from __future__ import annotations
+
 import logging
 
 from pipelineguard.core.loader import PipelineFile
 from pipelineguard.models.pipeline import Pipeline, PipelineType
-from pipelineguard.parsers import parse_gitlab, parse_github, parse_jenkins
+from pipelineguard.parsers import parse_github, parse_gitlab, parse_jenkins
 
 logger = logging.getLogger(__name__)
 

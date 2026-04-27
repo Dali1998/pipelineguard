@@ -3,16 +3,17 @@ Orchestrator: discovers files → parses → runs rules → returns ScanResult.
 """
 
 from __future__ import annotations
+
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from pipelineguard.core.loader import find_pipeline_files
 from pipelineguard.core.normalizer import normalize
-from pipelineguard.models.pipeline import Pipeline
 from pipelineguard.models.issue import Issue, Severity
-from pipelineguard.rules.registry import load_rules
+from pipelineguard.models.pipeline import Pipeline
 from pipelineguard.rules.base_rule import BaseRule
+from pipelineguard.rules.registry import load_rules
 
 logger = logging.getLogger(__name__)
 
@@ -105,7 +106,7 @@ class Scanner:
     @staticmethod
     def _detect_single(path: Path):
         """Detect the pipeline type of a single file."""
-        from pipelineguard.core.loader import PipelineFile, _MATCHERS
+        from pipelineguard.core.loader import _MATCHERS, PipelineFile
         for pipeline_type, matcher in _MATCHERS:
             if matcher(path):
                 return PipelineFile(path=path, pipeline_type=pipeline_type)

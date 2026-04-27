@@ -3,10 +3,10 @@ JSON reporter – writes a structured scan report to stdout or a file.
 """
 
 from __future__ import annotations
+
 import json
-import sys
+from datetime import UTC, datetime
 from pathlib import Path
-from datetime import datetime, timezone
 
 from pipelineguard.core.scanner import ScanResult
 
@@ -29,7 +29,7 @@ def write_report(
         The JSON string (regardless of whether it was written to a file).
     """
     payload = {
-        "generated_at": datetime.now(tz=timezone.utc).isoformat(),
+        "generated_at": datetime.now(tz=UTC).isoformat(),
         "summary": result.summary(),
         "scanned_files": result.scanned_files,
         "skipped_files": result.skipped_files,
@@ -40,7 +40,7 @@ def write_report(
 
     if output_path:
         Path(output_path).write_text(json_str, encoding="utf-8")
-    
+
     return json_str
 
 

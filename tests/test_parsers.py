@@ -1,13 +1,14 @@
 """Integration tests for parsers using fixture YAML/Groovy files."""
 
 import textwrap
-import pytest
 from pathlib import Path
 
-from pipelineguard.parsers.gitlab_parser import parse as parse_gitlab
-from pipelineguard.parsers.github_parser import parse as parse_github
-from pipelineguard.parsers.jenkins_parser import parse as parse_jenkins
+import pytest
+
 from pipelineguard.models.pipeline import PipelineType
+from pipelineguard.parsers.github_parser import parse as parse_github
+from pipelineguard.parsers.gitlab_parser import parse as parse_gitlab
+from pipelineguard.parsers.jenkins_parser import parse as parse_jenkins
 
 
 @pytest.fixture

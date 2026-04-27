@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional
 from enum import Enum
 
 
@@ -21,7 +20,7 @@ class Pipeline:
     raw: dict = field(default_factory=dict)
 
     # Optional metadata
-    name: Optional[str] = None
+    name: str | None = None
     stages: list[str] = field(default_factory=list)
 
     def add_job(self, job: "Job") -> None:

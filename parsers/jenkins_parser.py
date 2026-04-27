@@ -8,12 +8,12 @@ a real implementation could use `python-jenkinsfile` or invoke
 """
 
 from __future__ import annotations
+
 import re
 from pathlib import Path
 
-from pipelineguard.models.pipeline import Pipeline, PipelineType
 from pipelineguard.models.job import Job
-
+from pipelineguard.models.pipeline import Pipeline, PipelineType
 
 # Regex patterns for declarative Jenkinsfile constructs
 _STAGE_RE = re.compile(r"stage\s*\(\s*['\"](.+?)['\"]\s*\)", re.MULTILINE)

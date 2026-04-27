@@ -1,11 +1,10 @@
 """End-to-end scanner integration tests."""
 
 import textwrap
+
 import pytest
-from pathlib import Path
 
 from pipelineguard.core.scanner import Scanner
-from pipelineguard.models.issue import Severity
 
 
 @pytest.fixture

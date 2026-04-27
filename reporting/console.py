@@ -4,13 +4,14 @@ Falls back to plain ANSI codes if `rich` is not installed.
 """
 
 from __future__ import annotations
+
 from pipelineguard.core.scanner import ScanResult
 from pipelineguard.models.issue import Severity
 
 try:
+    from rich import box
     from rich.console import Console
     from rich.table import Table
-    from rich import box
     from rich.text import Text
     _RICH = True
 except ImportError:

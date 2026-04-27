@@ -3,14 +3,14 @@ Rules that detect hardcoded or leaked secrets in pipeline definitions.
 """
 
 import re
-from pipelineguard.rules.base_rule import BaseRule
+
+from pipelineguard.models.issue import Issue, IssueCategory, Severity
 from pipelineguard.models.pipeline import Pipeline
-from pipelineguard.models.issue import Issue, Severity, IssueCategory
+from pipelineguard.rules.base_rule import BaseRule
 from pipelineguard.utils.patterns import (
     AWS_ACCESS_KEY,
     GITHUB_TOKEN,
     GITLAB_TOKEN,
-    GENERIC_SECRET,
     PRIVATE_KEY_HEADER,
     has_high_entropy,
 )

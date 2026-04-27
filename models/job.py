@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional
 
 
 @dataclass
@@ -7,10 +6,10 @@ class Job:
     """Unified representation of a single pipeline job/step."""
 
     name: str
-    stage: Optional[str] = None
+    stage: str | None = None
 
     # Execution
-    image: Optional[str] = None          # Docker image used
+    image: str | None = None          # Docker image used
     script: list[str] = field(default_factory=list)
     commands: list[str] = field(default_factory=list)
 

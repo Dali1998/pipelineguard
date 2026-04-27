@@ -6,10 +6,10 @@ Rules that check job isolation weaknesses:
   - supply-chain (mutable action refs, unauthenticated registries)
 """
 
-from pipelineguard.rules.base_rule import BaseRule
+from pipelineguard.models.issue import Issue, IssueCategory, Severity
 from pipelineguard.models.pipeline import Pipeline
-from pipelineguard.models.issue import Issue, Severity, IssueCategory
-from pipelineguard.utils.patterns import GHA_MUTABLE_REF, EVAL_EXPRESSION
+from pipelineguard.rules.base_rule import BaseRule
+from pipelineguard.utils.patterns import EVAL_EXPRESSION, GHA_MUTABLE_REF
 
 
 def _issue(rule_id, title, desc, sev, pipeline, job_name, evidence=None, remediation=None):
@@ -89,7 +89,7 @@ class AllowFailureOnSecurityJobRule(BaseRule):
                     self.rule_id, self.title,
                     f"Job '{job.name}' appears to be a security scan but is configured with "
                     "allow_failure: true, so vulnerabilities will not block the pipeline.",
-                    self.severity, pipeline, job.name, f"allow_failure: true",
+                    self.severity, pipeline, job.name, "allow_failure: true",
                     "Set allow_failure: false on security jobs so findings block the pipeline.",
                 ))
         return issues

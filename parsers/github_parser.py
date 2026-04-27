@@ -3,12 +3,14 @@ Parser for GitHub Actions workflow files (.github/workflows/*.yml).
 """
 
 from __future__ import annotations
-import yaml
+
 from pathlib import Path
 from typing import Any
 
-from pipelineguard.models.pipeline import Pipeline, PipelineType
+import yaml
+
 from pipelineguard.models.job import Job
+from pipelineguard.models.pipeline import Pipeline, PipelineType
 
 
 def parse(file_path: str | Path) -> Pipeline:

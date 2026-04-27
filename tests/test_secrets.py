@@ -1,12 +1,10 @@
 """Unit tests for secrets rules."""
 
-import pytest
-from pipelineguard.models.pipeline import Pipeline, PipelineType
 from pipelineguard.models.job import Job
+from pipelineguard.models.pipeline import Pipeline, PipelineType
 from pipelineguard.rules.secrets import (
-    HardcodedAwsKeyRule,
-    HardcodedGitHubTokenRule,
     GenericSecretInEnvRule,
+    HardcodedAwsKeyRule,
     PrivateKeyInScriptRule,
 )
 

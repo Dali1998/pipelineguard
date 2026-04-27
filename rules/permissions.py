@@ -3,11 +3,10 @@ Rules that check for over-privileged permissions in pipeline jobs.
 Covers GitHub Actions GITHUB_TOKEN scopes, GitLab job tokens, OIDC, etc.
 """
 
-from pipelineguard.rules.base_rule import BaseRule
+from pipelineguard.models.issue import Issue, IssueCategory, Severity
 from pipelineguard.models.pipeline import Pipeline
-from pipelineguard.models.issue import Issue, Severity, IssueCategory
+from pipelineguard.rules.base_rule import BaseRule
 from pipelineguard.utils.patterns import SUDO_USAGE
-
 
 _WRITE_PERMISSIONS = {
     "contents": "write",

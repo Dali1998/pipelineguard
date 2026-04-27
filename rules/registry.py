@@ -7,11 +7,9 @@ as long as they are imported (or exist in this package).
 import importlib
 import pkgutil
 from pathlib import Path
-from typing import Optional
 
-from pipelineguard.rules.base_rule import BaseRule
 from pipelineguard.models.issue import Severity
-
+from pipelineguard.rules.base_rule import BaseRule
 
 # Modules inside the rules package that are NOT rule files
 _EXCLUDED_MODULES = {"base_rule", "registry", "__init__"}
@@ -27,7 +25,7 @@ def _import_all_rule_modules() -> None:
 
 
 def load_rules(
-    severity_filter: Optional[list[Severity]] = None,
+    severity_filter: list[Severity] | None = None,
 ) -> list[BaseRule]:
     """
     Return instantiated, enabled rules.

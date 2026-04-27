@@ -2,15 +2,14 @@
 Rules that check Docker image hygiene and container security in pipelines.
 """
 
-import re
-from pipelineguard.rules.base_rule import BaseRule
+from pipelineguard.models.issue import Issue, IssueCategory, Severity
 from pipelineguard.models.pipeline import Pipeline
-from pipelineguard.models.issue import Issue, Severity, IssueCategory
+from pipelineguard.rules.base_rule import BaseRule
 from pipelineguard.utils.patterns import (
-    DOCKER_IMAGE_LATEST,
-    DOCKER_IMAGE_DIGEST,
-    DOCKER_SOCKET,
     CURL_PIPE_SHELL,
+    DOCKER_IMAGE_DIGEST,
+    DOCKER_IMAGE_LATEST,
+    DOCKER_SOCKET,
 )
 
 

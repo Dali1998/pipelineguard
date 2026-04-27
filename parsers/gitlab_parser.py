@@ -3,13 +3,14 @@ Parser for GitLab CI pipeline files (.gitlab-ci.yml).
 """
 
 from __future__ import annotations
-import yaml
+
 from pathlib import Path
 from typing import Any
 
-from pipelineguard.models.pipeline import Pipeline, PipelineType
-from pipelineguard.models.job import Job
+import yaml
 
+from pipelineguard.models.job import Job
+from pipelineguard.models.pipeline import Pipeline, PipelineType
 
 # Top-level keys that are NOT job definitions
 _GITLAB_RESERVED = {

@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from pipelineguard.models import Pipeline, Issue
+    from pipelineguard.models import Issue, Pipeline
 
 
 class BaseRule(ABC):

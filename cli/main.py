@@ -9,15 +9,16 @@ Usage examples:
 """
 
 from __future__ import annotations
-import sys
-import logging
+
 import argparse
+import logging
+import sys
 from pathlib import Path
 
 from pipelineguard.core.scanner import Scanner
 from pipelineguard.models.issue import Severity
 from pipelineguard.reporting.console import print_report
-from pipelineguard.reporting.json_report import write_report, print_json
+from pipelineguard.reporting.json_report import print_json, write_report
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -123,8 +124,9 @@ def cmd_scan(args: argparse.Namespace) -> int:
 
 
 def cmd_list_rules(args: argparse.Namespace) -> int:
-    from pipelineguard.rules.registry import load_rules
     import json as _json
+
+    from pipelineguard.rules.registry import load_rules
 
     rules = load_rules()
     if args.format == "json":

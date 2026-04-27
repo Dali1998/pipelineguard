@@ -1,14 +1,13 @@
 """Unit tests for Docker rules."""
 
-import pytest
-from pipelineguard.models.pipeline import Pipeline, PipelineType
 from pipelineguard.models.job import Job
+from pipelineguard.models.pipeline import Pipeline, PipelineType
 from pipelineguard.rules.docker import (
-    UnpinnedDockerImageRule,
+    CurlPipeShellRule,
+    DockerSocketMountRule,
     LatestTagRule,
     PrivilegedContainerRule,
-    DockerSocketMountRule,
-    CurlPipeShellRule,
+    UnpinnedDockerImageRule,
 )
 
 

@@ -5,9 +5,9 @@ Returns typed PipelineFile objects so the scanner knows which parser to call.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
 
 from pipelineguard.models.pipeline import PipelineType
 

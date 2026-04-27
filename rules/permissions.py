@@ -46,13 +46,19 @@ class WriteAllPermissionsRule(BaseRule):
                 # Only a broad 'write-all' style grant
                 pass
             if perms.get("all") == "write" or perms.get("permissions") == "write-all":
-                issues.append(_issue(
-                    self.rule_id, self.title,
-                    f"Job '{job.name}' is granted write-all permissions. "
-                    "This violates least-privilege.",
-                    self.severity, pipeline, job.name, str(perms),
-                    "Enumerate only the specific permissions your job needs.",
-                ))
+                issues.append(
+                    _issue(
+                        self.rule_id,
+                        self.title,
+                        f"Job '{job.name}' is granted write-all permissions. "
+                        "This violates least-privilege.",
+                        self.severity,
+                        pipeline,
+                        job.name,
+                        str(perms),
+                        "Enumerate only the specific permissions your job needs.",
+                    )
+                )
         return issues
 
 
@@ -65,18 +71,22 @@ class BroadWritePermissionsRule(BaseRule):
         issues: list[Issue] = []
         for job in pipeline.jobs:
             write_scopes = [
-                k for k, v in job.permissions.items()
-                if v == "write" and k in _WRITE_PERMISSIONS
+                k for k, v in job.permissions.items() if v == "write" and k in _WRITE_PERMISSIONS
             ]
             if len(write_scopes) >= 3:
-                issues.append(_issue(
-                    self.rule_id, self.title,
-                    f"Job '{job.name}' requests {len(write_scopes)} write-level permissions: "
-                    f"{', '.join(write_scopes)}.",
-                    self.severity, pipeline, job.name,
-                    f"permissions: {job.permissions}",
-                    "Reduce permissions to only what is strictly necessary for each job.",
-                ))
+                issues.append(
+                    _issue(
+                        self.rule_id,
+                        self.title,
+                        f"Job '{job.name}' requests {len(write_scopes)} write-level permissions: "
+                        f"{', '.join(write_scopes)}.",
+                        self.severity,
+                        pipeline,
+                        job.name,
+                        f"permissions: {job.permissions}",
+                        "Reduce permissions to only what is strictly necessary for each job.",
+                    )
+                )
         return issues
 
 
@@ -101,12 +111,18 @@ class MissingIdTokenPermissionRule(BaseRule):
             # Check if any command or step references an OIDC-related keyword
             combined = " ".join(job.all_commands()).lower()
             if not any(kw in combined for kw in self._OIDC_KEYWORDS):
-                issues.append(_issue(
-                    self.rule_id, self.title,
-                    f"Job '{job.name}' grants id-token:write but no OIDC-related step was found.",
-                    self.severity, pipeline, job.name, "id-token: write",
-                    "Remove id-token:write unless the job explicitly uses OIDC authentication.",
-                ))
+                issues.append(
+                    _issue(
+                        self.rule_id,
+                        self.title,
+                        f"Job '{job.name}' grants id-token:write but no OIDC-related step was found.",
+                        self.severity,
+                        pipeline,
+                        job.name,
+                        "id-token: write",
+                        "Remove id-token:write unless the job explicitly uses OIDC authentication.",
+                    )
+                )
         return issues
 
 
@@ -120,12 +136,18 @@ class SudoInCiRule(BaseRule):
         for job in pipeline.jobs:
             for cmd in job.all_commands():
                 if SUDO_USAGE.search(cmd):
-                    issues.append(_issue(
-                        self.rule_id, self.title,
-                        f"Job '{job.name}' uses sudo in a script step. "
-                        "Running CI workloads with sudo escalates privileges unnecessarily.",
-                        self.severity, pipeline, job.name, cmd[:100],
-                        "Run CI jobs as a non-root user; install deps in the image build phase.",
-                    ))
+                    issues.append(
+                        _issue(
+                            self.rule_id,
+                            self.title,
+                            f"Job '{job.name}' uses sudo in a script step. "
+                            "Running CI workloads with sudo escalates privileges unnecessarily.",
+                            self.severity,
+                            pipeline,
+                            job.name,
+                            cmd[:100],
+                            "Run CI jobs as a non-root user; install deps in the image build phase.",
+                        )
+                    )
                     break  # one finding per job is enough
         return issues

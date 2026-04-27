@@ -60,4 +60,5 @@ def _all_subclasses(cls: type) -> list[type]:
 
 def _is_abstract(cls: type) -> bool:
     import inspect
+
     return inspect.isabstract(cls)

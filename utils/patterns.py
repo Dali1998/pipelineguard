@@ -80,12 +80,14 @@ GHA_MUTABLE_REF = re.compile(
 # Utility helpers
 # ---------------------------------------------------------------------------
 
+
 def has_high_entropy(value: str, threshold: float = 3.8) -> bool:
     """
     Shannon entropy check to catch random-looking secret values.
     Anything above ~3.8 bits/char is suspicious for short strings.
     """
     import math
+
     if not value or len(value) < 12:
         return False
     freq = {c: value.count(c) / len(value) for c in set(value)}

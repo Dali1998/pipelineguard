@@ -14,8 +14,16 @@ from pipelineguard.models.pipeline import Pipeline, PipelineType
 
 # Top-level keys that are NOT job definitions
 _GITLAB_RESERVED = {
-    "stages", "variables", "image", "services", "before_script",
-    "after_script", "cache", "include", "workflow", "default",
+    "stages",
+    "variables",
+    "image",
+    "services",
+    "before_script",
+    "after_script",
+    "cache",
+    "include",
+    "workflow",
+    "default",
 }
 
 
@@ -64,10 +72,7 @@ def _parse_job(name: str, data: dict, global_image: str | None) -> Job:
     after = _to_list(data.get("after_script", []))
 
     services_raw = data.get("services", [])
-    services = [
-        (s["name"] if isinstance(s, dict) else s)
-        for s in services_raw
-    ]
+    services = [(s["name"] if isinstance(s, dict) else s) for s in services_raw]
 
     volumes: list[str] = []
     # GitLab runners expose volumes via runner config, not pipeline YAML,

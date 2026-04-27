@@ -13,6 +13,7 @@ try:
     from rich.console import Console
     from rich.table import Table
     from rich.text import Text
+
     _RICH = True
 except ImportError:
     _RICH = False
@@ -20,18 +21,18 @@ except ImportError:
 
 _SEVERITY_COLOR = {
     Severity.CRITICAL: "bold red",
-    Severity.HIGH:     "red",
-    Severity.MEDIUM:   "yellow",
-    Severity.LOW:      "cyan",
-    Severity.INFO:     "dim",
+    Severity.HIGH: "red",
+    Severity.MEDIUM: "yellow",
+    Severity.LOW: "cyan",
+    Severity.INFO: "dim",
 }
 
 _ANSI_SEVERITY = {
     Severity.CRITICAL: "\033[1;31m",  # bold red
-    Severity.HIGH:     "\033[31m",    # red
-    Severity.MEDIUM:   "\033[33m",    # yellow
-    Severity.LOW:      "\033[36m",    # cyan
-    Severity.INFO:     "\033[2m",     # dim
+    Severity.HIGH: "\033[31m",  # red
+    Severity.MEDIUM: "\033[33m",  # yellow
+    Severity.LOW: "\033[36m",  # cyan
+    Severity.INFO: "\033[2m",  # dim
 }
 _ANSI_RESET = "\033[0m"
 
@@ -46,6 +47,7 @@ def print_report(result: ScanResult, show_remediation: bool = True) -> None:
 # ---------------------------------------------------------------------------
 # Rich renderer
 # ---------------------------------------------------------------------------
+
 
 def _rich_report(result: ScanResult, show_remediation: bool) -> None:
     console = Console()
@@ -103,14 +105,17 @@ def _print_severity_summary(console, counts: dict) -> None:
 # Plain fallback renderer
 # ---------------------------------------------------------------------------
 
+
 def _plain_report(result: ScanResult, show_remediation: bool) -> None:
     summary = result.summary()
     print("=" * 60)
     print("PipelineGuard Scan Report")
     print("=" * 60)
-    print(f"Scanned: {summary['scanned_files']} file(s) | "
-          f"Skipped: {summary['skipped_files']} | "
-          f"Issues: {summary['total_issues']}")
+    print(
+        f"Scanned: {summary['scanned_files']} file(s) | "
+        f"Skipped: {summary['skipped_files']} | "
+        f"Issues: {summary['total_issues']}"
+    )
     print()
 
     if not result.issues:
@@ -119,8 +124,9 @@ def _plain_report(result: ScanResult, show_remediation: bool) -> None:
 
     for issue in result.issues:
         color = _ANSI_SEVERITY.get(issue.severity, "")
-        print(f"{color}[{issue.severity.value.upper()}]{_ANSI_RESET} "
-              f"{issue.rule_id} – {issue.title}")
+        print(
+            f"{color}[{issue.severity.value.upper()}]{_ANSI_RESET} {issue.rule_id} – {issue.title}"
+        )
         print(f"  File : {issue.source_file}")
         if issue.job_name:
             print(f"  Job  : {issue.job_name}")

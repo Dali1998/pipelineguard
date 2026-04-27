@@ -63,10 +63,11 @@ def _parse_job(job_id: str, data: dict) -> Job:
     env_vars = _flatten_env(data.get("env", {}))
 
     services_raw = data.get("services", {})
-    services = [
-        v.get("image", "") if isinstance(v, dict) else str(v)
-        for v in services_raw.values()
-    ] if isinstance(services_raw, dict) else []
+    services = (
+        [v.get("image", "") if isinstance(v, dict) else str(v) for v in services_raw.values()]
+        if isinstance(services_raw, dict)
+        else []
+    )
 
     return Job(
         name=job_id,

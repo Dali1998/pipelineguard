@@ -9,13 +9,13 @@ class Job:
     stage: str | None = None
 
     # Execution
-    image: str | None = None          # Docker image used
+    image: str | None = None  # Docker image used
     script: list[str] = field(default_factory=list)
     commands: list[str] = field(default_factory=list)
 
     # Environment
     env_vars: dict[str, str] = field(default_factory=dict)
-    secrets: list[str] = field(default_factory=list)   # referenced secret names
+    secrets: list[str] = field(default_factory=list)  # referenced secret names
 
     # Permissions / OIDC / IAM
     permissions: dict[str, str] = field(default_factory=dict)

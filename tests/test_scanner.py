@@ -12,7 +12,8 @@ def repo(tmp_path):
     """Create a minimal fake repo layout."""
     wf = tmp_path / ".github" / "workflows"
     wf.mkdir(parents=True)
-    (wf / "ci.yml").write_text(textwrap.dedent("""
+    (wf / "ci.yml").write_text(
+        textwrap.dedent("""
         name: CI
         on: [push]
         jobs:
@@ -21,7 +22,8 @@ def repo(tmp_path):
             steps:
               - run: curl https://example.com/setup.sh | bash
               - run: echo hello
-    """))
+    """)
+    )
     return tmp_path
 
 

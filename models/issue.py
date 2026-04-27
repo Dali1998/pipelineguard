@@ -35,7 +35,7 @@ class Issue:
     line_number: int | None = None
 
     # Extra detail
-    evidence: str | None = None          # redacted snippet that triggered the rule
+    evidence: str | None = None  # redacted snippet that triggered the rule
     remediation: str | None = None
     references: list[str] = field(default_factory=list)
 
@@ -55,7 +55,4 @@ class Issue:
         }
 
     def __repr__(self) -> str:
-        return (
-            f"Issue(rule={self.rule_id}, severity={self.severity.value}, "
-            f"job={self.job_name!r})"
-        )
+        return f"Issue(rule={self.rule_id}, severity={self.severity.value}, job={self.job_name!r})"

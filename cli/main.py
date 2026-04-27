@@ -28,7 +28,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--version", action="version", version="pipelineguard 0.1.0")
     parser.add_argument(
-        "-v", "--verbose",
+        "-v",
+        "--verbose",
         action="store_true",
         help="Enable debug logging.",
     )
@@ -49,7 +50,8 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output format (default: console).",
     )
     scan.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         type=Path,
         default=None,
         help="Write JSON report to this file (implies --format json).",
@@ -115,7 +117,13 @@ def cmd_scan(args: argparse.Namespace) -> int:
 
     # Determine exit code
     fail_severity = Severity(args.fail_on.lower()) if args.fail_on else Severity.CRITICAL
-    _SEVERITY_ORDER = [Severity.CRITICAL, Severity.HIGH, Severity.MEDIUM, Severity.LOW, Severity.INFO]
+    _SEVERITY_ORDER = [
+        Severity.CRITICAL,
+        Severity.HIGH,
+        Severity.MEDIUM,
+        Severity.LOW,
+        Severity.INFO,
+    ]
     fail_idx = _SEVERITY_ORDER.index(fail_severity)
     for issue in result.issues:
         if _SEVERITY_ORDER.index(issue.severity) <= fail_idx:

@@ -40,13 +40,19 @@ class UnpinnedDockerImageRule(BaseRule):
                 continue
             # No digest → mutable reference
             if not DOCKER_IMAGE_DIGEST.search(image):
-                issues.append(_issue(
-                    self.rule_id, self.title,
-                    f"Image '{image}' is not pinned to a SHA256 digest. "
-                    "A compromised or updated upstream image could silently break your pipeline.",
-                    self.severity, pipeline, job.name, image,
-                    "Pin images to a digest: e.g. python:3.12-slim@sha256:<hash>",
-                ))
+                issues.append(
+                    _issue(
+                        self.rule_id,
+                        self.title,
+                        f"Image '{image}' is not pinned to a SHA256 digest. "
+                        "A compromised or updated upstream image could silently break your pipeline.",
+                        self.severity,
+                        pipeline,
+                        job.name,
+                        image,
+                        "Pin images to a digest: e.g. python:3.12-slim@sha256:<hash>",
+                    )
+                )
         return issues
 
 
@@ -60,12 +66,18 @@ class LatestTagRule(BaseRule):
         for job in pipeline.jobs:
             image = job.image or ""
             if image.endswith(":latest") or DOCKER_IMAGE_LATEST.fullmatch(image):
-                issues.append(_issue(
-                    self.rule_id, self.title,
-                    f"Image '{image}' uses the ':latest' tag (or no tag), which is mutable.",
-                    self.severity, pipeline, job.name, image,
-                    "Use an explicit version tag and ideally a digest pin.",
-                ))
+                issues.append(
+                    _issue(
+                        self.rule_id,
+                        self.title,
+                        f"Image '{image}' uses the ':latest' tag (or no tag), which is mutable.",
+                        self.severity,
+                        pipeline,
+                        job.name,
+                        image,
+                        "Use an explicit version tag and ideally a digest pin.",
+                    )
+                )
         return issues
 
 
@@ -78,13 +90,19 @@ class PrivilegedContainerRule(BaseRule):
         issues: list[Issue] = []
         for job in pipeline.jobs:
             if job.privileged:
-                issues.append(_issue(
-                    self.rule_id, self.title,
-                    f"Job '{job.name}' runs its container in privileged mode, "
-                    "granting full host kernel access.",
-                    self.severity, pipeline, job.name, "privileged: true",
-                    "Remove privileged mode. Use targeted capabilities (cap_add) if needed.",
-                ))
+                issues.append(
+                    _issue(
+                        self.rule_id,
+                        self.title,
+                        f"Job '{job.name}' runs its container in privileged mode, "
+                        "granting full host kernel access.",
+                        self.severity,
+                        pipeline,
+                        job.name,
+                        "privileged: true",
+                        "Remove privileged mode. Use targeted capabilities (cap_add) if needed.",
+                    )
+                )
         return issues
 
 
@@ -98,13 +116,19 @@ class DockerSocketMountRule(BaseRule):
         for job in pipeline.jobs:
             for vol in job.volumes:
                 if DOCKER_SOCKET.search(vol):
-                    issues.append(_issue(
-                        self.rule_id, self.title,
-                        "Mounting /var/run/docker.sock gives the container full Docker daemon "
-                        "access — equivalent to root on the host.",
-                        Severity.CRITICAL, pipeline, job.name, vol,
-                        "Use Docker-in-Docker (dind) with TLS, or a rootless alternative like Podman.",
-                    ))
+                    issues.append(
+                        _issue(
+                            self.rule_id,
+                            self.title,
+                            "Mounting /var/run/docker.sock gives the container full Docker daemon "
+                            "access — equivalent to root on the host.",
+                            Severity.CRITICAL,
+                            pipeline,
+                            job.name,
+                            vol,
+                            "Use Docker-in-Docker (dind) with TLS, or a rootless alternative like Podman.",
+                        )
+                    )
         return issues
 
 
@@ -119,13 +143,19 @@ class CurlPipeShellRule(BaseRule):
             for cmd in job.all_commands():
                 match = CURL_PIPE_SHELL.search(cmd)
                 if match:
-                    issues.append(_issue(
-                        self.rule_id, self.title,
-                        "Piping curl/wget directly to sh/bash allows arbitrary remote code execution "
-                        "if the URL is compromised.",
-                        self.severity, pipeline, job.name, match.group()[:80],
-                        "Download the script, verify its checksum, then execute it explicitly.",
-                    ))
+                    issues.append(
+                        _issue(
+                            self.rule_id,
+                            self.title,
+                            "Piping curl/wget directly to sh/bash allows arbitrary remote code execution "
+                            "if the URL is compromised.",
+                            self.severity,
+                            pipeline,
+                            job.name,
+                            match.group()[:80],
+                            "Download the script, verify its checksum, then execute it explicitly.",
+                        )
+                    )
         return issues
 
 
@@ -139,10 +169,16 @@ class SidecarImageUnpinnedRule(BaseRule):
         for job in pipeline.jobs:
             for svc in job.services:
                 if not DOCKER_IMAGE_DIGEST.search(svc):
-                    issues.append(_issue(
-                        self.rule_id, self.title,
-                        f"Sidecar service image '{svc}' is not pinned to a digest.",
-                        self.severity, pipeline, job.name, svc,
-                        "Pin sidecar images to SHA256 digests the same as primary images.",
-                    ))
+                    issues.append(
+                        _issue(
+                            self.rule_id,
+                            self.title,
+                            f"Sidecar service image '{svc}' is not pinned to a digest.",
+                            self.severity,
+                            pipeline,
+                            job.name,
+                            svc,
+                            "Pin sidecar images to SHA256 digests the same as primary images.",
+                        )
+                    )
         return issues

@@ -57,12 +57,18 @@ class HardcodedAwsKeyRule(BaseRule):
             for cmd in job.all_commands():
                 match = AWS_ACCESS_KEY.search(cmd)
                 if match:
-                    issues.append(_make_issue(
-                        self.rule_id, self.title,
-                        "An AWS access key ID was found hardcoded in a pipeline command.",
-                        self.severity, pipeline, job.name, match.group(),
-                        "Use CI/CD secret variables or AWS IAM roles with OIDC instead.",
-                    ))
+                    issues.append(
+                        _make_issue(
+                            self.rule_id,
+                            self.title,
+                            "An AWS access key ID was found hardcoded in a pipeline command.",
+                            self.severity,
+                            pipeline,
+                            job.name,
+                            match.group(),
+                            "Use CI/CD secret variables or AWS IAM roles with OIDC instead.",
+                        )
+                    )
         return issues
 
 
@@ -77,12 +83,18 @@ class HardcodedGitHubTokenRule(BaseRule):
             for cmd in job.all_commands():
                 match = GITHUB_TOKEN.search(cmd)
                 if match:
-                    issues.append(_make_issue(
-                        self.rule_id, self.title,
-                        "A GitHub personal/fine-grained access token was found in a command.",
-                        self.severity, pipeline, job.name, match.group(),
-                        "Store tokens in encrypted CI/CD secrets and reference them via env vars.",
-                    ))
+                    issues.append(
+                        _make_issue(
+                            self.rule_id,
+                            self.title,
+                            "A GitHub personal/fine-grained access token was found in a command.",
+                            self.severity,
+                            pipeline,
+                            job.name,
+                            match.group(),
+                            "Store tokens in encrypted CI/CD secrets and reference them via env vars.",
+                        )
+                    )
         return issues
 
 
@@ -97,12 +109,18 @@ class HardcodedGitLabTokenRule(BaseRule):
             for cmd in job.all_commands():
                 match = GITLAB_TOKEN.search(cmd)
                 if match:
-                    issues.append(_make_issue(
-                        self.rule_id, self.title,
-                        "A GitLab project/personal access token was found in a command.",
-                        self.severity, pipeline, job.name, match.group(),
-                        "Use GitLab CI/CD masked variables or HashiCorp Vault.",
-                    ))
+                    issues.append(
+                        _make_issue(
+                            self.rule_id,
+                            self.title,
+                            "A GitLab project/personal access token was found in a command.",
+                            self.severity,
+                            pipeline,
+                            job.name,
+                            match.group(),
+                            "Use GitLab CI/CD masked variables or HashiCorp Vault.",
+                        )
+                    )
         return issues
 
 
@@ -118,16 +136,22 @@ class GenericSecretInEnvRule(BaseRule):
             for key, value in env.items():
                 if not isinstance(value, str):
                     continue
-                suspicious_key = bool(re.search(
-                    r"(?i)(password|secret|token|api.?key|private.?key|credential)", key
-                ))
+                suspicious_key = bool(
+                    re.search(r"(?i)(password|secret|token|api.?key|private.?key|credential)", key)
+                )
                 if suspicious_key and has_high_entropy(value):
-                    issues.append(_make_issue(
-                        self.rule_id, self.title,
-                        f"Environment variable '{key}' appears to contain a plaintext secret.",
-                        self.severity, pipeline, job_name, value,
-                        "Use masked/protected CI variables. Never hardcode secrets in pipeline YAML.",
-                    ))
+                    issues.append(
+                        _make_issue(
+                            self.rule_id,
+                            self.title,
+                            f"Environment variable '{key}' appears to contain a plaintext secret.",
+                            self.severity,
+                            pipeline,
+                            job_name,
+                            value,
+                            "Use masked/protected CI variables. Never hardcode secrets in pipeline YAML.",
+                        )
+                    )
 
         _scan_env(pipeline.env_vars, None)
         for job in pipeline.jobs:
@@ -146,10 +170,16 @@ class PrivateKeyInScriptRule(BaseRule):
         for job in pipeline.jobs:
             for cmd in job.all_commands():
                 if PRIVATE_KEY_HEADER.search(cmd):
-                    issues.append(_make_issue(
-                        self.rule_id, self.title,
-                        "A PEM private key header was detected inside a pipeline script block.",
-                        self.severity, pipeline, job.name, "-----BEGIN PRIVATE KEY-----",
-                        "Store private keys in CI secret variables or a secrets manager.",
-                    ))
+                    issues.append(
+                        _make_issue(
+                            self.rule_id,
+                            self.title,
+                            "A PEM private key header was detected inside a pipeline script block.",
+                            self.severity,
+                            pipeline,
+                            job.name,
+                            "-----BEGIN PRIVATE KEY-----",
+                            "Store private keys in CI secret variables or a secrets manager.",
+                        )
+                    )
         return issues

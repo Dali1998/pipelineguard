@@ -64,10 +64,7 @@ def _split_by_stages(content: str, stage_names: list[str]) -> dict[str, str]:
     if not stage_names:
         return {}
     result: dict[str, str] = {}
-    positions = [
-        (m.start(), m.group(1))
-        for m in _STAGE_RE.finditer(content)
-    ]
+    positions = [(m.start(), m.group(1)) for m in _STAGE_RE.finditer(content)]
     for i, (pos, name) in enumerate(positions):
         end = positions[i + 1][0] if i + 1 < len(positions) else len(content)
         result[name] = content[pos:end]

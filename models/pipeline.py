@@ -30,6 +30,5 @@ class Pipeline:
 
     def __repr__(self) -> str:
         return (
-            f"Pipeline(type={self.pipeline_type}, "
-            f"file={self.source_file}, jobs={len(self.jobs)})"
+            f"Pipeline(type={self.pipeline_type}, file={self.source_file}, jobs={len(self.jobs)})"
         )

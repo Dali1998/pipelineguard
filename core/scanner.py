@@ -75,9 +75,7 @@ class Scanner:
         result = ScanResult()
 
         pipeline_files = (
-            [self._detect_single(target)]
-            if target.is_file()
-            else find_pipeline_files(target)
+            [self._detect_single(target)] if target.is_file() else find_pipeline_files(target)
         )
         pipeline_files = [pf for pf in pipeline_files if pf is not None]
 
@@ -107,6 +105,7 @@ class Scanner:
     def _detect_single(path: Path):
         """Detect the pipeline type of a single file."""
         from pipelineguard.core.loader import _MATCHERS, PipelineFile
+
         for pipeline_type, matcher in _MATCHERS:
             if matcher(path):
                 return PipelineFile(path=path, pipeline_type=pipeline_type)

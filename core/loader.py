@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Callable
 
 from pipelineguard.models.pipeline import PipelineType
 
@@ -18,7 +19,7 @@ class PipelineFile:
 
 
 # Filename / path matchers in priority order
-_MATCHERS: list[tuple[PipelineType, callable]] = [
+_MATCHERS: list[tuple[PipelineType, Callable]] = [
     (
         PipelineType.GITLAB,
         lambda p: p.name == ".gitlab-ci.yml",

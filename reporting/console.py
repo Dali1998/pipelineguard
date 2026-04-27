@@ -82,7 +82,7 @@ def _rich_report(result: ScanResult, show_remediation: bool) -> None:
         location = f"{issue.source_file}"
         if issue.job_name:
             location += f"\n[dim]job: {issue.job_name}[/dim]"
-        row = [sev_text, issue.rule_id, issue.title, location]
+        row = [str(sev_text), str(issue.rule_id), str(issue.title), str(location)]
         if show_remediation:
             row.append(issue.remediation or "—")
         table.add_row(*row)

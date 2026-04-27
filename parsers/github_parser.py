@@ -38,7 +38,6 @@ def parse(file_path: str | Path) -> Pipeline:
 
 
 def _parse_job(job_id: str, data: dict) -> Job:
-    runs_on = data.get("runs-on", "")
     container = data.get("container", {})
     image: str | None = None
     if isinstance(container, str):

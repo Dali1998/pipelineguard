@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 
+from pipelineguard.models.job import Job
 
-class PipelineType(str, Enum):
+class PipelineType(StrEnum):
     GITLAB = "gitlab"
     GITHUB = "github"
     JENKINS = "jenkins"
@@ -15,7 +16,7 @@ class Pipeline:
 
     source_file: str
     pipeline_type: PipelineType
-    jobs: list["Job"] = field(default_factory=list)
+    jobs: list[Job] = field(default_factory=list)
     env_vars: dict[str, str] = field(default_factory=dict)
     raw: dict = field(default_factory=dict)
 
@@ -23,7 +24,7 @@ class Pipeline:
     name: str | None = None
     stages: list[str] = field(default_factory=list)
 
-    def add_job(self, job: "Job") -> None:
+    def add_job(self, job: Job) -> None:
         self.jobs.append(job)
 
     def __repr__(self) -> str:

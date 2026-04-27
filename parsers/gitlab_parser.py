@@ -72,7 +72,6 @@ def _parse_job(name: str, data: dict, global_image: str | None) -> Job:
     volumes: list[str] = []
     # GitLab runners expose volumes via runner config, not pipeline YAML,
     # but some CI configs embed docker options
-    docker_opts = data.get("variables", {})
 
     return Job(
         name=name,

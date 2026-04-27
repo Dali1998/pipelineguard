@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     CRITICAL = "critical"
     HIGH = "high"
     MEDIUM = "medium"
@@ -10,7 +10,7 @@ class Severity(str, Enum):
     INFO = "info"
 
 
-class IssueCategory(str, Enum):
+class IssueCategory(StrEnum):
     SECRET = "secret"
     DOCKER = "docker"
     PERMISSIONS = "permissions"

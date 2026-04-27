@@ -13,9 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Debug workspace
-        run: ls -R
-        
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -43,7 +41,7 @@ jobs:
         run: pip install -e ".[dev]"
 
       - name: Run mypy
-        run: mypy pipelineguard/
+        run: mypy .
 
   # ── Tests ────────────────────────────────────────────────────────────
   test:

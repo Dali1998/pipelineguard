@@ -90,7 +90,9 @@ jobs:
         run: pip install -e .
 
       - name: Scan this repo's pipelines
-        run: pipelineguard scan . --severity critical,high --fail-on high
+        run: |
+              cd ..
+              python -m pipelineguard.cli.main scan . --severity critical,high --fail-on high
 
       - name: Export JSON report
         if: always()

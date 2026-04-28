@@ -98,7 +98,7 @@ jobs:
         if: always()
         run: |
               cd ..
-              pipelineguard scan . --format json --output pipelineguard-report.json
+              python -m pipelineguard.cli.main scan . --format json --output pipelineguard-report.json
 
       - name: Upload scan report
         if: always()

@@ -101,7 +101,7 @@ class AllowFailureOnSecurityJobRule(BaseRule):
                     self.rule_id, self.title,
                     f"Job '{job.name}' appears to be a security scan but is configured with "
                     "allow_failure: true, so vulnerabilities will not block the pipeline.",
-                    self.severity, pipeline, job.name, f"allow_failure: true",
+                    self.severity, pipeline, job.name, "allow_failure: true",
                     "Set allow_failure: false on security jobs so findings block the pipeline.",
                 ))
         return issues

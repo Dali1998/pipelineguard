@@ -1,6 +1,6 @@
 # PipelineGuard
 
-Security scanner for CI/CD pipeline definitions and Docker images.  
+Security scanner tool for CI/CD pipeline definitions and Docker images.  
 Supports **GitLab CI**, **GitHub Actions**, and **Jenkinsfile** out of the box.
 
 ---

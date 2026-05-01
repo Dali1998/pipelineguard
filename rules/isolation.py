@@ -51,13 +51,19 @@ class MutableActionRefRule(BaseRule):
                 action_name = match.group().split("uses:")[-1].strip().split("@")[0].strip()
                 if action_name in self.ALLOWLIST:
                     continue
-                issues.append(_issue(
-                    self.rule_id, self.title,
-                    "A GitHub Action step references a mutable branch/tag ref. "
-                    "A compromised upstream repo could inject malicious code.",
-                    self.severity, pipeline, job.name, match.group(),
-                    "Pin actions to a full commit SHA: uses: actions/checkout@<sha>",
-                ))
+                issues.append(
+                    _issue(
+                        self.rule_id,
+                        self.title,
+                        "A GitHub Action step references a mutable branch/tag ref. "
+                        "A compromised upstream repo could inject malicious code.",
+                        self.severity,
+                        pipeline,
+                        job.name,
+                        match.group(),
+                        "Pin actions to a full commit SHA: uses: actions/checkout@<sha>",
+                    )
+                )
         return issues
 
 
@@ -72,13 +78,19 @@ class EvalInScriptRule(BaseRule):
             for cmd in job.all_commands():
                 match = EVAL_EXPRESSION.search(cmd)
                 if match:
-                    issues.append(_issue(
-                        self.rule_id, self.title,
-                        f"Job '{job.name}' uses eval with a dynamic expression, "
-                        "enabling potential code injection.",
-                        self.severity, pipeline, job.name, cmd[:120],
-                        "Avoid eval; use explicit commands or safe parameter expansion.",
-                    ))
+                    issues.append(
+                        _issue(
+                            self.rule_id,
+                            self.title,
+                            f"Job '{job.name}' uses eval with a dynamic expression, "
+                            "enabling potential code injection.",
+                            self.severity,
+                            pipeline,
+                            job.name,
+                            cmd[:120],
+                            "Avoid eval; use explicit commands or safe parameter expansion.",
+                        )
+                    )
                     break
         return issues
 
@@ -97,13 +109,19 @@ class AllowFailureOnSecurityJobRule(BaseRule):
                 continue
             name_lower = job.name.lower()
             if any(kw in name_lower for kw in self._SECURITY_KEYWORDS):
-                issues.append(_issue(
-                    self.rule_id, self.title,
-                    f"Job '{job.name}' appears to be a security scan but is configured with "
-                    "allow_failure: true, so vulnerabilities will not block the pipeline.",
-                    self.severity, pipeline, job.name, "allow_failure: true",
-                    "Set allow_failure: false on security jobs so findings block the pipeline.",
-                ))
+                issues.append(
+                    _issue(
+                        self.rule_id,
+                        self.title,
+                        f"Job '{job.name}' appears to be a security scan but is configured with "
+                        "allow_failure: true, so vulnerabilities will not block the pipeline.",
+                        self.severity,
+                        pipeline,
+                        job.name,
+                        "allow_failure: true",
+                        "Set allow_failure: false on security jobs so findings block the pipeline.",
+                    )
+                )
         return issues
 
 
@@ -132,13 +150,21 @@ class UnauthenticatedRegistryRule(BaseRule):
                 continue
             registry = image.split("/")[0] if "/" in image else ""
             # If the first segment contains a dot or colon it's a registry hostname
-            is_custom_registry = ("." in registry or ":" in registry) and registry not in self._TRUSTED_REGISTRIES
+            is_custom_registry = (
+                "." in registry or ":" in registry
+            ) and registry not in self._TRUSTED_REGISTRIES
             if is_custom_registry:
-                issues.append(_issue(
-                    self.rule_id, self.title,
-                    f"Job '{job.name}' pulls from registry '{registry}' which is not on the "
-                    "known-trusted list.",
-                    self.severity, pipeline, job.name, image,
-                    "Prefer images from trusted registries or mirror to a private registry.",
-                ))
+                issues.append(
+                    _issue(
+                        self.rule_id,
+                        self.title,
+                        f"Job '{job.name}' pulls from registry '{registry}' which is not on the "
+                        "known-trusted list.",
+                        self.severity,
+                        pipeline,
+                        job.name,
+                        image,
+                        "Prefer images from trusted registries or mirror to a private registry.",
+                    )
+                )
         return issues
